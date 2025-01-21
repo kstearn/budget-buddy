@@ -1,0 +1,45 @@
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background-color: #282c34;
+}
+
+.Layout {
+  height: 100vh;
+  text-align: center;
+  display: flex;
+  justify-content: flex-start;
+  align-items: stretch;
+  gap: 20px;
+}
+
+nav {
+  height: 100%;
+  width: 15%;
+  background-color: white;
+  color: gray;
+  padding: 10px 20px;
+}
+
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: gray;
+  font-size: 1.5em;
+}
+
+main {
+  width: 100%;
+  background-color: white;
+}
