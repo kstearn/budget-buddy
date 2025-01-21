@@ -1,7 +1,7 @@
 html, body {
   height: 100%;
   overflow: hidden;
-  background-color: #282c34;
+  background-color: #374151;
 }
 
 .Layout {
@@ -16,7 +16,7 @@ html, body {
 nav {
   height: 100%;
   width: 15%;
-  background-color: white;
+  background-color: #F9FAFB;
   color: gray;
   padding: 10px 20px;
 }
@@ -39,7 +39,11 @@ nav ul li a {
   font-size: 1.5em;
 }
 
+nav ul li a:hover {
+  border-bottom: 5px solid #A7F3D0;
+}
+
 main {
   width: 100%;
-  background-color: white;
+  color: #F9FAFB;
 }
