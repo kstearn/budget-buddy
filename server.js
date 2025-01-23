@@ -1,8 +1,9 @@
 const express = require('express');
 const app = express();
-const port = 3000;
+const port = 4000;
 
 app.get('/api/hello', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
     res.send(
         {
             "name": "Test User",
