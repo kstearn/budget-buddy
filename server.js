@@ -7,17 +7,28 @@ app.get('/api/hello', (req, res) => {
     res.send(
         {
             "name": "Test User",
-            "budgetCategories": {
-                "groceries": 100,
-                "restaurants": 200,
-                "transportation": 50,
-                "utilities": 100,
-                "rent": 500,
-                "entertainment": 50,
-                "clothing": 50,
-                "medical": 50,
-                "savings": 100
-            },
+            "totalBudget": 1000,
+            "totalSpent": 300,
+            "budgetCategories": [
+                {name: "groceries",
+                value: 100},
+                {name: "restaurants",
+                    value: 200},
+                {name: "transportation",
+                    value: 50},
+                {name: "utilities",
+                    value: 100},
+                {name: "rent",
+                    value: 500},
+                {name: "entertainment",
+                    value: 50},
+                {name: "clothing",
+                    value: 50},
+                {name: "medical",
+                    value: 50},
+                {name: "savings",
+                    value: 100}
+            ],
             "transactions": {
                 "groceries": [
                     {

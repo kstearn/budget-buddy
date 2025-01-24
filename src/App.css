@@ -1,24 +1,55 @@
+/*** COMMON ***/
 html, body {
   height: 100%;
+  margin: 0;
   overflow: hidden;
   background-color: #374151;
 }
 
+#root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
 .Layout {
-  height: 100vh;
-  text-align: center;
+  height: 100%;
   display: flex;
   justify-content: flex-start;
   align-items: stretch;
   gap: 20px;
+  box-sizing: border-box;
+  text-align: center;
 }
 
+main {
+  width: 100%;
+  height: 100%;
+  color: #F9FAFB;
+}
+
+main h2, main p {
+  margin: 5px;
+}
+
+/*** NAVIGATION ***/
 nav {
   height: 100%;
-  width: 15%;
+  width: 17%;
   background-color: #F9FAFB;
   color: gray;
   padding: 10px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  box-sizing: border-box;
+}
+
+nav h1 {
+  margin: 5px;
+  padding: 0;
+  font-size: 1.5em;
+  color: #374151;
 }
 
 nav ul {
@@ -43,7 +74,83 @@ nav ul li a:hover {
   border-bottom: 5px solid #A7F3D0;
 }
 
-main {
+.addButtons {
+  margin-top: auto;
+}
+
+.addButtons button {
+  background-color: #0891B2;
+  border: none;
+  padding: 10px 20px;
+  margin: 10px 0;
+  font-size: 1em;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.addButtons button:hover {
+  background-color: #15a5ca;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.addButtons button:active {
+  background-color: #066982;
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.addButtons button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.5);
+}
+
+nav button a {
+  text-decoration: none;
+  color: white;
+  margin-right: 5px;
+}
+
+/*** DASHBOARD ***/
+.dashboard {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+
+.chartsContainer {
   width: 100%;
-  color: #F9FAFB;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  gap: 20px;
+  overflow: hidden;
+}
+
+.topChartsContainer {
+  height: 40%;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  flex: 1;
+}
+
+.chartCard{
+  background-color: #F9FAFB;
+  color: #374151;
+  padding: 20px;
+}
+
+.barChart {
+  height: 60%;
+  background-color: #F9FAFB;
+  color: #374151;
+  flex: 1;
+  padding: 20px;
 }

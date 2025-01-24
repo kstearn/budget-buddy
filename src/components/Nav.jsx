@@ -11,6 +11,10 @@ const Nav = () => {
                 <li><Link to="/budget">Budget</Link></li>
                 <li><Link to="/spending">Spending</Link></li>
             </ul>
+            <div className="addButtons">
+                <button><Link>➕ Add Income</Link></button>
+                <button><Link>➕ Add Expense</Link></button>
+            </div>
         </nav>
     );
 }
