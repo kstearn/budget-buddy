@@ -154,3 +154,58 @@ nav button a {
   flex: 1;
   padding: 20px;
 }
+
+/*** BUDGET ***/
+.budget {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+
+.budgetTableContainer {
+  background-color: #F9FAFB;
+  color: #374151;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  gap: 20px;
+  overflow: hidden;
+}
+
+/*** SPENDING ***/
+.spending {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+
+.spendingDataContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  gap: 20px;
+  overflow: hidden;
+  flex-grow: 1;
+}
+
+.spendingChartContainer {
+  background-color: #F9FAFB;
+  height: 40%;
+}
+
+.spendingTableContainer {
+  background-color: #F9FAFB;
+  height: 60%;
+}
