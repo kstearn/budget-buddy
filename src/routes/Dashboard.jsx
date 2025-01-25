@@ -19,7 +19,8 @@ const Dashboard = () => {
         ArcElement,
         Title,
         Tooltip,
-        Legend);
+        Legend
+    );
 
     const [dashboardData, setDashboardData] = useState({});
     const [budgetChartData, setBudgetChartData] = useState({});
@@ -42,7 +43,6 @@ const Dashboard = () => {
             labels: ['Spent', 'Remaining'],
             datasets: [
                 {
-                    label: 'Budget Overview',
                     data: [dashboardData.totalSpent, dashboardData.totalBudget - dashboardData.totalSpent],
                     backgroundColor: [colors[1], colors[0]]
                 }
@@ -63,7 +63,6 @@ const Dashboard = () => {
             labels: dashboardData.budgetCategories.map(category => category.name),
             datasets: [
                 {
-                    label: 'Spending by Category',
                     data: dashboardData.budgetCategories.map(category => category.value),
                     backgroundColor: dashboardData.budgetCategories.map((category, index) => colors[index % colors.length])
                 }
@@ -124,6 +123,9 @@ const Dashboard = () => {
                                 title: {
                                     display: true,
                                     text: 'This Month'
+                                },
+                                legend: {
+                                    display: false
                                 }
                             }
                         }}

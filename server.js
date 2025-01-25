@@ -10,112 +10,24 @@ app.get('/api/hello', (req, res) => {
             "totalBudget": 1000,
             "totalSpent": 300,
             "budgetCategories": [
-                {name: "groceries",
-                value: 100},
-                {name: "restaurants",
-                    value: 200},
-                {name: "transportation",
-                    value: 50},
-                {name: "utilities",
-                    value: 100},
-                {name: "rent",
-                    value: 500},
-                {name: "entertainment",
-                    value: 50},
-                {name: "clothing",
-                    value: 50},
-                {name: "medical",
-                    value: 50},
-                {name: "savings",
-                    value: 100}
+                {name: "groceries", value: 100},
+                {name: "restaurants", value: 200},
+                {name: "transportation", value: 50},
+                {name: "utilities", value: 100},
+                {name: "rent", value: 500},
+                {name: "entertainment", value: 50},
+                {name: "clothing", value: 50},
+                {name: "medical", value: 50},
+                {name: "savings", value: 100}
             ],
-            "transactions": {
-                "groceries": [
-                    {
-                        "date": "2021-01-01",
-                        "amount": 10,
-                        "description": "Grocery Store"
-                    },
-                    {
-                        "date": "2021-01-02",
-                        "amount": 20,
-                        "description": "Grocery Store"
-                    },
-                    {
-                        "date": "2021-01-03",
-                        "amount": 30,
-                        "description": "Grocery Store"
-                    }
-                ],
-                "restaurants": [
-                    {
-                        "date": "2021-01-01",
-                        "amount": 10,
-                        "description": "Restaurant"
-                    },
-                    {
-                        "date": "2021-01-02",
-                        "amount": 20,
-                        "description": "Restaurant"
-                    },
-                    {
-                        "date": "2021-01-03",
-                        "amount": 30,
-                        "description": "Restaurant"
-                    }
-                ],
-                "transportation": [
-                    {
-                        "date": "2021-01-01",
-                        "amount": 10,
-                        "description": "Gas Station"
-                    },
-                    {
-                        "date": "2021-01-02",
-                        "amount": 20,
-                        "description": "Gas Station"
-                    },
-                    {
-                        "date": "2021-01-03",
-                        "amount": 30,
-                        "description": "Gas Station"
-                    }
-                ],
-                "utilities": [
-                    {
-                        "date": "2021-01-01",
-                        "amount": 10,
-                        "description": "Utility Company"
-                    },
-                    {
-                        "date": "2021-01-02",
-                        "amount": 20,
-                        "description": "Utility Company"
-                    },
-                    {
-                        "date": "2021-01-03",
-                        "amount": 30,
-                        "description": "Utility Company"
-                    }
-                ],
-                "rent": [
-                    {
-                        "date": "2021-01-01",
-                        "amount": 10,
-                        "description": "Landlord"
-                    },
-                    {
-                        "date": "2021-01-02",
-                        "amount": 20,
-                        "description": "Landlord"
-                    },
-                    {
-                        "date": "2021-01-03",
-                        "amount": 30,
-                        "description": "Landlord"
-                    }
-                ]
-            }
+            "transactions": [
+                {category: "clothing", amount: 30, date: "2023-10-01"},
+                {category: "medical", amount: 20, date: "2023-10-02"},
+                {category: "savings", amount: 50, date: "2023-10-03"},
+                {category: "clothing", amount: 10, date: "2023-10-04"},
+                {category: "medical", amount: 30, date: "2023-10-05"},
+                {category: "savings", amount: 50, date: "2023-10-06"}
+            ]
         }
     );
 });
