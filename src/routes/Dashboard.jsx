@@ -10,8 +10,11 @@ import {
     Legend } from 'chart.js';
 import { Bar, Doughnut, Pie } from 'react-chartjs-2';
 import { colors } from '../colors';
+import { useAuth } from '../auth/AuthContext';
 
 const Dashboard = () => {
+    const { user, loading } = useAuth();
+
     ChartJS.register(
         CategoryScale,
         LinearScale,
@@ -32,6 +35,7 @@ const Dashboard = () => {
         fetch('/api/hello')
             .then((res) => res.json())
             .then((data) => setDashboardData(data));
+        console.log(user);
     }, [])
 
     // update the chart data when the dashboard data changes
@@ -73,7 +77,7 @@ const Dashboard = () => {
     return (
         <div className="dashboard">
             <h2>Dashboard</h2>
-            <p>{dashboardData ? `Welcome to the dashboard, ${dashboardData.name}` : 'Loading...'}</p>
+            <p>{loading ? 'Loading...' : `Welcome to the dashboard, ${user.displayName}`}</p>
             <div className="chartsContainer">
                 <div className="topChartsContainer">
                     <div className="chartCard">

@@ -11,6 +11,8 @@ import {
 import { Bar } from 'react-chartjs-2';
 import { colors } from '../colors';
 
+import { getData, getUserBudgetCategories } from '../firebase.js';
+
 const Spending = () => {
     ChartJS.register(
         CategoryScale,
@@ -27,27 +29,30 @@ const Spending = () => {
 
     // fetch data from the server
     useEffect(() => {
-        fetch('/api/hello')
-            .then((res) => res.json())
-            .then((data) => setSpendingData(data));
+        // fetch('/api/hello')
+        //     .then((res) => res.json())
+        //     .then((data) => setSpendingData(data));
+        // getData().then(data => setSpendingData(data[0]));
+        getData().then(data => console.log(data));
+        getUserBudgetCategories('testuser').then(data => console.log(data));
     }, [])
 
     // update the chart data when the dashboard data changes
-    useEffect(() => {
-        if (!spendingData.name) return;
-        console.log(spendingData.transactions);
+    // useEffect(() => {
+    //     if (!spendingData.name) return;
+    //     console.log(spendingData.transactions);
 
-        setBarChartData({
-            labels: spendingData.budgetCategories.map(category => category.name),
-            datasets: [
-                {
-                    label: 'Spending by Category',
-                    data: spendingData.budgetCategories.map(category => category.value),
-                    backgroundColor: spendingData.budgetCategories.map((category, index) => colors[index % colors.length])
-                }
-            ]
-        });
-    }, [spendingData])
+    //     setBarChartData({
+    //         labels: spendingData.budgetCategories.map(category => category.name),
+    //         datasets: [
+    //             {
+    //                 label: 'Spending by Category',
+    //                 data: spendingData.budgetCategories.map(category => category.value),
+    //                 backgroundColor: spendingData.budgetCategories.map((category, index) => colors[index % colors.length])
+    //             }
+    //         ]
+    //     });
+    // }, [spendingData])
 
     return (
         <div className="spending">
@@ -55,7 +60,7 @@ const Spending = () => {
             <p>Welcome to the spending</p>
             <div className="spendingDataContainer">
                 <div className="barChart">
-                    {barChartData.labels &&
+                    {/* {barChartData.labels &&
                     <Bar
                         data={barChartData}
                         options={{
@@ -71,11 +76,11 @@ const Spending = () => {
                                 }
                             }
                         }}
-                    />}
+                    />} */}
                 </div>
                 <div className="spendingTableContainer">
                     <h3>Transactions</h3>
-                    <table>
+                    {/* <table>
                         <thead>
                             <tr>
                                 <th>Date</th>
@@ -92,7 +97,7 @@ const Spending = () => {
                                 </tr>
                             ))}
                         </tbody>
-                    </table>
+                    </table> */}
                 </div>
             </div>
         </div>
