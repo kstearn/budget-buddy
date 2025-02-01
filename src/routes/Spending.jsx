@@ -10,10 +10,13 @@ import {
     Legend } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import { colors } from '../colors';
+import { useAuth } from '../auth/AuthContext';
 
-import { getData, getUserBudgetCategories } from '../firebase.js';
+import { getData, getUserBudgetCategories } from '../database/budget';
 
 const Spending = () => {
+    const { user, loading } = useAuth();
+
     ChartJS.register(
         CategoryScale,
         LinearScale,
@@ -30,11 +33,13 @@ const Spending = () => {
     // fetch data from the server
     useEffect(() => {
         // fetch('/api/hello')
+        if (!user) return;
         //     .then((res) => res.json())
         //     .then((data) => setSpendingData(data));
         // getData().then(data => setSpendingData(data[0]));
         getData().then(data => console.log(data));
-        getUserBudgetCategories('testuser').then(data => console.log(data));
+        console.log(user.uid);
+        getUserBudgetCategories(user).then(data => console.log(data));
     }, [])
 
     // update the chart data when the dashboard data changes

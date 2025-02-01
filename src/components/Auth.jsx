@@ -2,6 +2,7 @@ import firebase from 'firebase/compat/app';
 import * as firebaseui from 'firebaseui';
 import 'firebaseui/dist/firebaseui.css';
 import { auth } from '../firebase';
+import { createNewUser } from '../database/user';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { useAuth } from '../auth/AuthContext';
@@ -20,8 +21,14 @@ const Auth = () => {
             callbacks: {
                 signInSuccessWithAuthResult: (authResult, redirectUrl) => {
                     // User successfully signed in.
-                    // Redirect to the home page or any other page.
                     setUser(authResult.user);
+
+                    if (authResult.additionalUserInfo.isNewUser) {
+                        // New user created
+                        // Add user to the database
+                        createNewUser(authResult.user);
+                    }
+
                     navigate('/');
                     return false; // Avoid redirects after sign-in.
                 }
@@ -36,7 +43,7 @@ const Auth = () => {
             const ui = firebaseui.auth.AuthUI.getInstance();
             ui.start('#firebaseui-auth-container', uiConfig);
         }
-    }, [navigate]);
+    }, [navigate, setUser]);
 
     return (
         <div id="firebaseui-auth-container"></div>

@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
+import { getFirestore } from 'firebase/firestore/lite';
 import { getAuth } from "firebase/auth";
 
 // API keys for Firebase services are not secret
@@ -18,18 +18,4 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-async function getData() {
-    const coll = collection(db, 'users');
-    const snapshot = await getDocs(coll);
-    const users = snapshot.docs.map(doc => doc.data());
-    return users;
-}
-
-async function getUserBudgetCategories(user) {
-    const coll = collection(db, `users/${user}/budgetCategories`);
-    const snapshot = await getDocs(coll);
-    const categories = snapshot.docs.map(doc => doc.data());
-    return categories;
-}
-
-export { auth, getData, getUserBudgetCategories };
+export { auth, db };
