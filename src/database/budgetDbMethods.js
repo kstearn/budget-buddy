@@ -23,10 +23,10 @@ async function getUserBudgetCategories(user) {
     }
 }
 
-async function createNewBudgetCategory(user, categoryName, categoryValue) {
-    await setDoc(doc(db, 'users', user.uid, 'budgetCategories', categoryName), {
-            name: categoryName,
-            value: categoryValue
+async function createNewBudgetCategory(user, name, amount) {
+    await setDoc(doc(db, 'users', user.uid, 'budgetCategories', name), {
+            categoryName: name,
+            budgetAmount: amount
         }
     );
 }

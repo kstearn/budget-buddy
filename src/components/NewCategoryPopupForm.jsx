@@ -1,6 +1,8 @@
 import React from 'react';
+import { useAuth } from '../auth/AuthContext';
 
 const NewCategoryPopupForm = ({ isVisible, onClose, onSubmit }) => {
+    const { user } = useAuth();
     if (!isVisible) return null;
 
     const handleSubmit = (event) => {
@@ -8,7 +10,7 @@ const NewCategoryPopupForm = ({ isVisible, onClose, onSubmit }) => {
         const formData = new FormData(event.target);
         const categoryName = formData.get('categoryName');
         const budgetAmount = formData.get('budgetAmount');
-        onSubmit({ categoryName, budgetAmount });
+        onSubmit({ user, categoryName, budgetAmount });
         onClose();
     };
 

@@ -1,7 +1,11 @@
 import { useState } from "react";
 import NewCategoryPopupForm from "../components/NewCategoryPopupForm";
+import { createNewBudgetCategory } from "../database/budgetDbMethods";
+import { useAuth } from "../auth/AuthContext";
 
 const Budget = () => {
+    const { user } = useAuth();
+
     const [isPopupVisible, setIsPopupVisible] = useState(false);
 
     const handleButtonClick = () => {
@@ -13,7 +17,7 @@ const Budget = () => {
     }
 
     const handleSubmit = (data) => {
-        console.log(data);
+        createNewBudgetCategory(data.user, data.categoryName, data.budgetAmount);
         handleClosePopup();
     }
 
