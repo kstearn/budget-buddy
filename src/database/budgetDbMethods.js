@@ -1,5 +1,5 @@
 import { db } from "../firebase";
-import { doc, getDoc } from "firebase/firestore/lite";
+import { doc, getDoc, setDoc } from "firebase/firestore/lite";
 
 async function getData() {
     
@@ -23,4 +23,12 @@ async function getUserBudgetCategories(user) {
     }
 }
 
-export { getData, getUserBudgetCategories };
+async function createNewBudgetCategory(user, categoryName, categoryValue) {
+    await setDoc(doc(db, 'users', user.uid, 'budgetCategories', categoryName), {
+            name: categoryName,
+            value: categoryValue
+        }
+    );
+}
+
+export { getData, getUserBudgetCategories, createNewBudgetCategory };

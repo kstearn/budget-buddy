@@ -11,8 +11,7 @@ import {
 import { Bar } from 'react-chartjs-2';
 import { colors } from '../colors';
 import { useAuth } from '../auth/AuthContext';
-
-import { getData, getUserBudgetCategories } from '../database/budget';
+import { getData, getUserBudgetCategories } from '../database/budgetDbMethods';
 
 const Spending = () => {
     const { user, loading } = useAuth();

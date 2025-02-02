@@ -2,7 +2,7 @@ import firebase from 'firebase/compat/app';
 import * as firebaseui from 'firebaseui';
 import 'firebaseui/dist/firebaseui.css';
 import { auth } from '../firebase';
-import { createNewUser } from '../database/user';
+import { createNewUser } from '../database/userDbMethods';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { useAuth } from '../auth/AuthContext';

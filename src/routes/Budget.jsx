@@ -1,4 +1,22 @@
+import { useState } from "react";
+import NewCategoryPopupForm from "../components/NewCategoryPopupForm";
+
 const Budget = () => {
+    const [isPopupVisible, setIsPopupVisible] = useState(false);
+
+    const handleButtonClick = () => {
+        setIsPopupVisible(true);
+    }
+
+    const handleClosePopup = () => {
+        setIsPopupVisible(false);
+    }
+
+    const handleSubmit = (data) => {
+        console.log(data);
+        handleClosePopup();
+    }
+
     return (
         <div className="budget">
             <h2>Budget</h2>
@@ -40,6 +58,12 @@ const Budget = () => {
                         </tr>
                     </tbody>
                 </table>
+                <button onClick={handleButtonClick}>Add Category</button>
+                <NewCategoryPopupForm 
+                    isVisible={isPopupVisible}
+                    onClose={handleClosePopup}
+                    onSubmit={handleSubmit} 
+                />
             </div>
         </div>
     );
