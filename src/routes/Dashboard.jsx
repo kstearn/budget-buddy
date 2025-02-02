@@ -35,13 +35,11 @@ const Dashboard = () => {
         fetch('/api/hello')
             .then((res) => res.json())
             .then((data) => setDashboardData(data));
-        console.log(user);
     }, [])
 
     // update the chart data when the dashboard data changes
     useEffect(() => {
         if (!dashboardData.name) return;
-        console.log(dashboardData.budgetCategories);
 
         setBudgetChartData({
             labels: ['Spent', 'Remaining'],

@@ -36,8 +36,6 @@ const Spending = () => {
         //     .then((res) => res.json())
         //     .then((data) => setSpendingData(data));
         // getData().then(data => setSpendingData(data[0]));
-        getData().then(data => console.log(data));
-        console.log(user.uid);
         getUserBudgetCategories(user).then(data => console.log(data));
     }, [])
 
