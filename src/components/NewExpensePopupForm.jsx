@@ -1,8 +1,19 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../auth/AuthContext';
+import { getUserBudgetCategories } from "../database/budgetDbMethods";
 
 const NewExpensePopupForm = ({ isVisible, onClose, onSubmit }) => {
     const { user } = useAuth();
+    const [categories, setCategories] = useState([]);
+
+    useEffect(() => {
+        if (user) {
+            getUserBudgetCategories(user)
+            .then(setCategories)
+            .catch(console.error);
+        }
+    }, [user]);
+
     if (!isVisible) return null;
 
     const handleSubmit = (event) => {
@@ -24,7 +35,13 @@ const NewExpensePopupForm = ({ isVisible, onClose, onSubmit }) => {
                 <form onSubmit={handleSubmit}>
                     <label>
                         Category:
-                        <input type="text" name="category" required />
+                        <select name="category" required>
+                            {Object.keys(categories).map((category) => (
+                                <option key={category} value={category}>
+                                    {category}
+                                </option>
+                            ))}
+                        </select>
                     </label>
                     <label>
                         Amount:

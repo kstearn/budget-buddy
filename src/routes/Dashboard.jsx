@@ -11,9 +11,12 @@ import {
 import { Bar, Doughnut, Pie } from 'react-chartjs-2';
 import { colors } from '../colors';
 import { useAuth } from '../auth/AuthContext';
+import { getMonthlySummary } from '../database/transactionsDbMethods';
+import { useDataRefresh } from '../context/DataRefreshContext';
 
 const Dashboard = () => {
     const { user, loading } = useAuth();
+    const { refreshData } = useDataRefresh();
 
     ChartJS.register(
         CategoryScale,
@@ -30,16 +33,20 @@ const Dashboard = () => {
     const [spendingChartData, setSpendingChartData] = useState({});
     const [barChartData, setBarChartData] = useState({});
     
-    // fetch data from the server
+    // fetch data
     useEffect(() => {
-        fetch('/api/hello')
-            .then((res) => res.json())
-            .then((data) => setDashboardData(data));
-    }, [])
+        // get budget and spent from monthly summary
+        // get spending per category from monthly summary
+        let currentYear = new Date().getFullYear().toString();
+        let currentMonth = (new Date().getMonth() + 1).toString().padStart(2, '0');
+
+        getMonthlySummary(user, currentYear, currentMonth)
+            .then(data => setDashboardData(data));
+    }, [refreshData]);
 
     // update the chart data when the dashboard data changes
     useEffect(() => {
-        if (!dashboardData.name) return;
+        if (!dashboardData.totalSpent) return;
 
         setBudgetChartData({
             labels: ['Spent', 'Remaining'],
@@ -51,22 +58,26 @@ const Dashboard = () => {
             ]
         });
 
+        const categories = Object.keys(dashboardData.budgetCategories);
+        const spentAmounts = categories.map(category => dashboardData.budgetCategories[category].spentAmount);
+        const budgetAmounts = categories.map(category => dashboardData.budgetCategories[category].budgetAmount);
+
         setSpendingChartData({
-            labels: dashboardData.budgetCategories.map(category => category.name),
+            labels: categories,
             datasets: [
                 {
-                    data: dashboardData.budgetCategories,
-                    backgroundColor: dashboardData.budgetCategories.map((category, index) => colors[index % colors.length])
+                    data: spentAmounts,
+                    backgroundColor: categories.map((category, index) => colors[index % colors.length])
                 }
             ]
         });
 
         setBarChartData({
-            labels: dashboardData.budgetCategories.map(category => category.name),
+            labels: categories,
             datasets: [
                 {
-                    data: dashboardData.budgetCategories.map(category => category.value),
-                    backgroundColor: dashboardData.budgetCategories.map((category, index) => colors[index % colors.length])
+                    data: spentAmounts,
+                    backgroundColor: categories.map((category, index) => colors[index % colors.length])
                 }
             ]
         });

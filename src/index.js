@@ -9,23 +9,26 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Auth from './components/Auth';
 import PrivateRoute from './components/PrivateRoute';
 import { AuthProvider } from './auth/AuthContext';
+import { DataRefreshProvider } from './context/DataRefreshContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<App />}>
-            <Route element={<PrivateRoute />}>
-              <Route index element={<Dashboard />} />
-              <Route path="budget" element={<Budget />} />
-              <Route path="spending" element={<Spending />} />
+      <DataRefreshProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<App />}>
+              <Route element={<PrivateRoute />}>
+                <Route index element={<Dashboard />} />
+                <Route path="budget" element={<Budget />} />
+                <Route path="spending" element={<Spending />} />
+              </Route>
             </Route>
-          </Route>
-          <Route path="auth" element={<Auth />} />
-        </Routes>
-      </BrowserRouter>
+            <Route path="auth" element={<Auth />} />
+          </Routes>
+        </BrowserRouter>
+      </DataRefreshProvider>
     </AuthProvider>
   </React.StrictMode>
 );

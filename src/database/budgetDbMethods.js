@@ -1,16 +1,15 @@
 import { db } from "../firebase";
-import { doc, getDoc, setDoc } from "firebase/firestore/lite";
+import { doc, collection, getDocs, setDoc } from "firebase/firestore/lite";
 
 async function getUserBudgetCategories(user) {
     try {
-        const categoryDoc = doc(db, `users/${user.uid}/budgetCategories`, "testCategory");
-        const categorySnapshot = await getDoc(categoryDoc);
-        if (categorySnapshot.exists()) {
-            return categorySnapshot.data();
-        } else {
-            console.error("No such document!");
-            return null;
-        }
+        const categoriesColl = collection(db, 'users', user.uid, 'budgetCategories');
+        const categoriesSnapshot = await getDocs(categoriesColl);
+        const categories = {};
+        categoriesSnapshot.forEach(doc => {
+            categories[doc.data().categoryName] = doc.data().budgetAmount;
+        });
+        return categories;
     } catch (error) {
         console.error("Error fetching budget category: ", error);
         throw error;

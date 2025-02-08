@@ -3,21 +3,34 @@ import { Link } from "react-router";
 import NewIncomePopupForm from "./NewIncomePopupForm";
 import NewExpensePopupForm from "./NewExpensePopupForm";
 import { addNewTransaction } from "../database/transactionsDbMethods";
+import { useDataRefresh } from "../context/DataRefreshContext";
 
 const Nav = () => {
-    const [isPopupVisible, setIsPopupVisible] = useState(false);
+    const [isIncomePopupVisible, setIsIncomePopupVisible] = useState(false);
+    const [isExpensePopupVisible, setIsExpensePopupVisible] = useState(false);
+    const { triggerRefresh } = useDataRefresh();
 
-    const handleButtonClick = () => {
-        setIsPopupVisible(true);
+    const handleIncomeButtonClick = () => {
+        setIsIncomePopupVisible(true);
     }
 
-    const handleClosePopup = () => {
-        setIsPopupVisible(false);
+    const handleExpenseButtonClick = () => {
+        setIsExpensePopupVisible(true);
+    }
+
+    const handleCloseIncomePopup = () => {
+        setIsIncomePopupVisible(false);
+    }
+
+    const handleCloseExpensePopup = () => {
+        setIsExpensePopupVisible(false);
     }
 
     const handleSubmit = (data) => {
-        addNewTransaction(data.user, data.transaction);
-        handleClosePopup();
+        addNewTransaction(data.user, data.transaction)
+            .then(() => triggerRefresh());
+        handleCloseIncomePopup();
+        handleCloseExpensePopup();
     }
 
     return (
@@ -31,16 +44,16 @@ const Nav = () => {
                 <li><Link to="/spending">Spending</Link></li>
             </ul>
             <div className="addButtons">
-                <button onClick={handleButtonClick}><Link>➕ Add Income</Link></button>
+                <button onClick={handleIncomeButtonClick}><Link>➕ Add Income</Link></button>
                 <NewIncomePopupForm 
-                    isVisible={isPopupVisible}
-                    onClose={handleClosePopup}
+                    isVisible={isIncomePopupVisible}
+                    onClose={handleCloseIncomePopup}
                     onSubmit={handleSubmit} 
                 />
-                <button onClick={handleButtonClick}><Link>➕ Add Expense</Link></button>
+                <button onClick={handleExpenseButtonClick}><Link>➕ Add Expense</Link></button>
                 <NewExpensePopupForm 
-                    isVisible={isPopupVisible}
-                    onClose={handleClosePopup}
+                    isVisible={isExpensePopupVisible}
+                    onClose={handleCloseExpensePopup}
                     onSubmit={handleSubmit} 
                 />
             </div>
