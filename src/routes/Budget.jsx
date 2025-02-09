@@ -3,9 +3,11 @@ import NewCategoryPopupForm from "../components/NewCategoryPopupForm";
 import { createNewBudgetCategory } from "../database/budgetDbMethods";
 import { useAuth } from "../contexts/AuthContext";
 import { getUserBudgetCategories } from "../database/budgetDbMethods";
+import { useDataRefresh } from "../contexts/DataRefreshContext";
 
 const Budget = () => {
     const { user } = useAuth();
+    const { triggerRefresh } = useDataRefresh();
     const [budgetCategories, setBudgetCategories] = useState([]);
 
     const [isPopupVisible, setIsPopupVisible] = useState(false);
@@ -20,6 +22,7 @@ const Budget = () => {
 
     const handleSubmit = async (data) => {
         await createNewBudgetCategory(data.user, data.categoryName, data.budgetAmount);
+        triggerRefresh(); 
         handleClosePopup();
         // Re-fetch budget categories after adding a new category
         const updatedCategories = await getUserBudgetCategories(data.user);

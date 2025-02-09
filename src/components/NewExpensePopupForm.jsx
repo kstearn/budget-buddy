@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { getUserBudgetCategories } from "../database/budgetDbMethods";
+import { useDataRefresh } from "../contexts/DataRefreshContext";
 
 const NewExpensePopupForm = ({ isVisible, onClose, onSubmit }) => {
     const { user } = useAuth();
+    const { refreshData } = useDataRefresh();
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
@@ -12,7 +14,7 @@ const NewExpensePopupForm = ({ isVisible, onClose, onSubmit }) => {
             .then(setCategories)
             .catch(console.error);
         }
-    }, [user]);
+    }, [user, refreshData]);
 
     if (!isVisible) return null;
 

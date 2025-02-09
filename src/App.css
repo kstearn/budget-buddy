@@ -207,9 +207,16 @@ nav ul li a:hover {
 }
 
 .spendingTableContainer {
-  color: #374151;
   background-color: #F9FAFB;
+  color: #374151;
+  width: 100%;
   height: 60%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  gap: 20px;
+  overflow: hidden;
 }
 
 /*** POPUP ***/

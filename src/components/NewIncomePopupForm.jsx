@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { getUserBudgetCategories } from "../database/budgetDbMethods";
+import { useDataRefresh } from "../contexts/DataRefreshContext";
 
 const NewIncomePopupForm = ({ isVisible, onClose, onSubmit }) => {
     const { user } = useAuth();
+    const { refreshData } = useDataRefresh();
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
@@ -12,14 +14,14 @@ const NewIncomePopupForm = ({ isVisible, onClose, onSubmit }) => {
             .then(setCategories)
             .catch(console.error);
         }
-    }, [user]);
+    }, [user, refreshData]);
 
     if (!isVisible) return null;
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const formData = new FormData(event.target);
-        const category = formData.get('category');
+        const category = "income";
         const amount = formData.get('amount');
         const date = formData.get('date');
         const description = formData.get('description');
@@ -33,16 +35,6 @@ const NewIncomePopupForm = ({ isVisible, onClose, onSubmit }) => {
             <div className="popup-content">
                 <h3>Add New Income</h3>
                 <form onSubmit={handleSubmit}>
-                    <label>
-                        Category:
-                        <select name="category" required>
-                            {Object.keys(categories).map((category) => (
-                                <option key={category} value={category}>
-                                    {category}
-                                </option>
-                            ))}
-                        </select>
-                    </label>
                     <label>
                         Amount:
                         <input type="number" name="amount" required />

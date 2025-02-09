@@ -1,7 +1,7 @@
 import { db } from '../firebase';
-import { setDoc, doc } from 'firebase/firestore/lite';
+import { setDoc, doc } from 'firebase/firestore';
 
-async function createNewUser(user) {
+export async function createNewUser(user) {
     await setDoc(doc(db, 'users', user.uid), {
         name: user.displayName
     });
@@ -10,5 +10,3 @@ async function createNewUser(user) {
         testCategory: []
     });
 }
-
-export { createNewUser};

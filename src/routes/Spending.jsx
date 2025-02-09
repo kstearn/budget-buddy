@@ -11,7 +11,8 @@ import {
 import { Bar } from 'react-chartjs-2';
 import { colors } from '../colors';
 import { useAuth } from '../contexts/AuthContext';
-import { getData, getUserBudgetCategories } from '../database/budgetDbMethods';
+import { getMonthlySummary } from '../database/monthlySummariesDbMethods';
+import { getRecentTransactions } from '../database/transactionsDbMethods';
 
 const Spending = () => {
     const { user, loading } = useAuth();
@@ -28,41 +29,55 @@ const Spending = () => {
 
     const [spendingData, setSpendingData] = useState({});
     const [barChartData, setBarChartData] = useState({});
+    const [recentTransactions, setRecentTransactions] = useState([]);
 
     // fetch data from the server
     useEffect(() => {
-        // fetch('/api/hello')
         if (!user) return;
-        //     .then((res) => res.json())
-        //     .then((data) => setSpendingData(data));
-        // getData().then(data => setSpendingData(data[0]));
-        getUserBudgetCategories(user).then(data => console.log(data));
+
+        // get monthly spending from monthly summary
+        let currentYear = new Date().getFullYear().toString();
+        let currentMonth = (new Date().getMonth() + 1).toString().padStart(2, '0');
+
+        getMonthlySummary(user, currentYear, currentMonth)
+            .then(data => setSpendingData(data));
+
+        // get most recent transactions
+        getRecentTransactions(user, 10)
+            .then(transactions => setRecentTransactions(transactions));
     }, [])
 
-    // update the chart data when the dashboard data changes
-    // useEffect(() => {
-    //     if (!spendingData.name) return;
-    //     console.log(spendingData.transactions);
+    //update the chart data when the dashboard data changes
+    useEffect(() => {
+        if (!spendingData.budgetCategories) return;
 
-    //     setBarChartData({
-    //         labels: spendingData.budgetCategories.map(category => category.name),
-    //         datasets: [
-    //             {
-    //                 label: 'Spending by Category',
-    //                 data: spendingData.budgetCategories.map(category => category.value),
-    //                 backgroundColor: spendingData.budgetCategories.map((category, index) => colors[index % colors.length])
-    //             }
-    //         ]
-    //     });
-    // }, [spendingData])
+        const categories = Object.keys(spendingData.budgetCategories);
+        const spentAmounts = categories.map(category => spendingData.budgetCategories[category].spentAmount);
+        const budgetAmounts = categories.map(category => spendingData.budgetCategories[category].budgetAmount);
+
+        setBarChartData({
+            labels: categories,
+            datasets: [
+                {
+                    label: 'Spent Amount',
+                    data: spentAmounts,
+                    backgroundColor: colors.slice(0, categories.length)
+                },
+                {
+                    label: 'Budget Amount',
+                    data: budgetAmounts,
+                    backgroundColor: colors.slice(categories.length, categories.length * 2)
+                }
+            ]
+        });
+    }, [spendingData])
 
     return (
         <div className="spending">
             <h2>Spending</h2>
-            <p>Welcome to the spending</p>
             <div className="spendingDataContainer">
                 <div className="barChart">
-                    {/* {barChartData.labels &&
+                    {barChartData.labels &&
                     <Bar
                         data={barChartData}
                         options={{
@@ -78,28 +93,30 @@ const Spending = () => {
                                 }
                             }
                         }}
-                    />} */}
+                    />}
                 </div>
                 <div className="spendingTableContainer">
                     <h3>Transactions</h3>
-                    {/* <table>
+                    <table>
                         <thead>
                             <tr>
                                 <th>Date</th>
                                 <th>Category</th>
                                 <th>Amount</th>
+                                <th>Description</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {spendingData.transactions && spendingData.transactions.map((transaction, index) => (
+                            {recentTransactions && recentTransactions.map((transaction, index) => (
                                 <tr key={index}>
                                     <td>{transaction.date}</td>
                                     <td>{transaction.category}</td>
                                     <td>{transaction.amount}</td>
+                                    <td>{transaction.description}</td>
                                 </tr>
                             ))}
                         </tbody>
-                    </table> */}
+                    </table>
                 </div>
             </div>
         </div>

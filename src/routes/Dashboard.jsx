@@ -11,7 +11,7 @@ import {
 import { Bar, Doughnut, Pie } from 'react-chartjs-2';
 import { colors } from '../colors';
 import { useAuth } from '../contexts/AuthContext';
-import { getMonthlySummary } from '../database/transactionsDbMethods';
+import { getMonthlySummary } from '../database/monthlySummariesDbMethods';
 import { useDataRefresh } from '../contexts/DataRefreshContext';
 
 const Dashboard = () => {

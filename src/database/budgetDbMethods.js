@@ -1,7 +1,8 @@
 import { db } from "../firebase";
-import { doc, collection, getDocs, setDoc } from "firebase/firestore/lite";
+import { doc, collection, getDocs, setDoc } from "firebase/firestore";
+import { addNewCategoryToMonthlySummary } from "./monthlySummariesDbMethods";
 
-async function getUserBudgetCategories(user) {
+export async function getUserBudgetCategories(user) {
     try {
         const categoriesColl = collection(db, 'users', user.uid, 'budgetCategories');
         const categoriesSnapshot = await getDocs(categoriesColl);
@@ -16,12 +17,12 @@ async function getUserBudgetCategories(user) {
     }
 }
 
-async function createNewBudgetCategory(user, name, amount) {
+export async function createNewBudgetCategory(user, name, amount) {
     await setDoc(doc(db, 'users', user.uid, 'budgetCategories', name), {
             categoryName: name,
             budgetAmount: amount
         }
     );
-}
 
-export { getUserBudgetCategories, createNewBudgetCategory };
+    addNewCategoryToMonthlySummary(user, name, amount);
+}
