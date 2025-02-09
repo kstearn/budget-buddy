@@ -10,7 +10,7 @@ import {
     Legend } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import { colors } from '../colors';
-import { useAuth } from '../auth/AuthContext';
+import { useAuth } from '../contexts/AuthContext';
 import { getData, getUserBudgetCategories } from '../database/budgetDbMethods';
 
 const Spending = () => {

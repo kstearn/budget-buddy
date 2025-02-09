@@ -8,8 +8,8 @@ import Spending from './routes/Spending';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Auth from './components/Auth';
 import PrivateRoute from './components/PrivateRoute';
-import { AuthProvider } from './auth/AuthContext';
-import { DataRefreshProvider } from './context/DataRefreshContext';
+import { AuthProvider } from './contexts/AuthContext';
+import { DataRefreshProvider } from './contexts/DataRefreshContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

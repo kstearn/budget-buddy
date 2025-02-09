@@ -5,7 +5,7 @@ import { auth } from '../firebase';
 import { createNewUser } from '../database/userDbMethods';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import { useAuth } from '../auth/AuthContext';
+import { useAuth } from '../contexts/AuthContext';
 
 const Auth = () => {
     const navigate = useNavigate();

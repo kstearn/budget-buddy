@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import NewIncomePopupForm from "./NewIncomePopupForm";
 import NewExpensePopupForm from "./NewExpensePopupForm";
 import { addNewTransaction } from "../database/transactionsDbMethods";
-import { useDataRefresh } from "../context/DataRefreshContext";
+import { useDataRefresh } from "../contexts/DataRefreshContext";
 
 const Nav = () => {
     const [isIncomePopupVisible, setIsIncomePopupVisible] = useState(false);

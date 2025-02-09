@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAuth } from '../auth/AuthContext';
+import { useAuth } from '../contexts/AuthContext';
 
 const NewCategoryPopupForm = ({ isVisible, onClose, onSubmit }) => {
     const { user } = useAuth();

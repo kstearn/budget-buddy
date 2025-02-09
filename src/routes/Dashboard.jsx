@@ -10,9 +10,9 @@ import {
     Legend } from 'chart.js';
 import { Bar, Doughnut, Pie } from 'react-chartjs-2';
 import { colors } from '../colors';
-import { useAuth } from '../auth/AuthContext';
+import { useAuth } from '../contexts/AuthContext';
 import { getMonthlySummary } from '../database/transactionsDbMethods';
-import { useDataRefresh } from '../context/DataRefreshContext';
+import { useDataRefresh } from '../contexts/DataRefreshContext';
 
 const Dashboard = () => {
     const { user, loading } = useAuth();

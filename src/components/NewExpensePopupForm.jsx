@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../auth/AuthContext';
+import { useAuth } from '../contexts/AuthContext';
 import { getUserBudgetCategories } from "../database/budgetDbMethods";
 
 const NewExpensePopupForm = ({ isVisible, onClose, onSubmit }) => {

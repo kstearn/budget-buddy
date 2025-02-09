@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import './App.css';
 import Nav from './components/Nav';
 import { Outlet } from 'react-router-dom';
-import { AuthProvider } from './auth/AuthContext';
 import { auth } from './firebase';
 
 function App() {
