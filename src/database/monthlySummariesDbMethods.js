@@ -74,7 +74,7 @@ export async function updateMonthlySummary(user, transaction) {
 
 export async function addNewCategoryToMonthlySummary(user, category, amount) {
     const year = new Date().getFullYear();
-    const month = new Date().getMonth() + 1;
+    const month = (new Date().getMonth() + 1).toString().padStart(2, '0');
     const monthlySummaryDoc = doc(db, 'users', user.uid, 'monthlySummaries', `${year}-${month}`);
     const monthlySummaryDocSnap = await getDoc(monthlySummaryDoc);
 

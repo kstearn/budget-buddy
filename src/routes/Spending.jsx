@@ -40,12 +40,18 @@ const Spending = () => {
         let currentMonth = (new Date().getMonth() + 1).toString().padStart(2, '0');
 
         getMonthlySummary(user, currentYear, currentMonth)
-            .then(data => setSpendingData(data));
+            .then(data => {
+                if (data) {
+                    setSpendingData(data);
+                } else {
+                    setSpendingData({});
+                }
+            });
 
         // get most recent transactions
         getRecentTransactions(user, 10)
             .then(transactions => setRecentTransactions(transactions));
-    }, [])
+    }, [user]);
 
     //update the chart data when the dashboard data changes
     useEffect(() => {
@@ -61,12 +67,14 @@ const Spending = () => {
                 {
                     label: 'Spent Amount',
                     data: spentAmounts,
-                    backgroundColor: colors.slice(0, categories.length)
+                    backgroundColor: colors.slice(0, categories.length),
+                    stack: 'Stack 0'
                 },
                 {
-                    label: 'Budget Amount',
-                    data: budgetAmounts,
-                    backgroundColor: colors.slice(categories.length, categories.length * 2)
+                    label: 'Remaining Budget',
+                    data: budgetAmounts.map((budget, index) => budget - spentAmounts[index]),
+                    backgroundColor: colors.slice(categories.length, categories.length * 2),
+                    stack: 'Stack 0'
                 }
             ]
         });
@@ -90,6 +98,15 @@ const Spending = () => {
                                 },
                                 legend: {
                                     display: false
+                                }
+                            },
+                            scales: {
+                                x: {
+                                    stacked: true
+                                },
+                                y: {
+                                    stacked: true,
+                                    min: 0
                                 }
                             }
                         }}

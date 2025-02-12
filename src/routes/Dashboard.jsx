@@ -41,8 +41,14 @@ const Dashboard = () => {
         let currentMonth = (new Date().getMonth() + 1).toString().padStart(2, '0');
 
         getMonthlySummary(user, currentYear, currentMonth)
-            .then(data => setDashboardData(data));
-    }, [refreshData]);
+            .then(data => {
+                if (data) {
+                    setDashboardData(data);
+                } else {
+                    setDashboardData({});
+                }
+            });
+    }, [user, refreshData]);
 
     // update the chart data when the dashboard data changes
     useEffect(() => {
@@ -87,64 +93,64 @@ const Dashboard = () => {
         <div className="dashboard">
             <h2>Dashboard</h2>
             <p>{loading ? 'Loading...' : `Welcome to the dashboard, ${user.displayName}`}</p>
-            <div className="chartsContainer">
-                <div className="topChartsContainer">
-                    <div className="chartCard">
-                        {budgetChartData.labels &&
-                        <Doughnut
-                            data={budgetChartData}
-                            options={{
-                                rotation: -90,
-                                circumference: 180,
-                                plugins: {
-                                    title: {
-                                        display: true,
-                                        text: 'My Budget'
-                                    }
-                                }
-                            }}
-                            
-                        />}
+            {dashboardData.totalSpent ? 
+                <div className="chartsContainer">
+                    <div className="topChartsContainer">
+                        <div className="chartCard">
+                            {budgetChartData.labels &&
+                                <Doughnut
+                                    data={budgetChartData}
+                                    options={{
+                                        rotation: -90,
+                                        circumference: 180,
+                                        plugins: {
+                                            title: {
+                                                display: true,
+                                                text: 'My Budget'
+                                            }
+                                        }
+                                    }} />}
+                        </div>
+                        <div className="chartCard">
+                            {spendingChartData.datasets &&
+                                <Pie
+                                    data={spendingChartData}
+                                    options={{
+                                        parsing: { key: 'value' },
+                                        plugins: {
+                                            legend: {
+                                                display: false
+                                            },
+                                            title: {
+                                                display: true,
+                                                text: 'Spending by Category'
+                                            }
+                                        }
+                                    }} />}
+                        </div>
                     </div>
-                    <div className="chartCard">
-                        {spendingChartData.datasets &&
-                        <Pie
-                            data={spendingChartData}
-                            options={{
-                                parsing: {key: 'value'},
-                                plugins: {
-                                    legend: {
-                                        display: false
-                                    },
-                                    title: {
-                                        display: true,
-                                        text: 'Spending by Category'
-                                    }
-                                }
-                            }}
-                        />}
+                    <div className="barChart">
+                            {barChartData.labels &&
+                                <Bar
+                                    data={barChartData}
+                                    options={{
+                                        response: true,
+                                        maintainAspectRatio: false,
+                                        plugins: {
+                                            title: {
+                                                display: true,
+                                                text: 'This Month'
+                                            },
+                                            legend: {
+                                                display: false
+                                            }
+                                        }
+                                    }} />}
                     </div>
                 </div>
-                <div className="barChart">
-                    {barChartData.labels &&
-                    <Bar
-                        data={barChartData}
-                        options={{
-                            response: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                title: {
-                                    display: true,
-                                    text: 'This Month'
-                                },
-                                legend: {
-                                    display: false
-                                }
-                            }
-                        }}
-                    />}
-                </div>
-            </div>
+            :
+                <p>No data to display. Try adding a budget category or transaction!</p>
+            }
         </div>
     );
 };
