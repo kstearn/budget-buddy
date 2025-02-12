@@ -88,7 +88,7 @@ export async function addNewCategoryToMonthlySummary(user, category, amount) {
         };
 
         updatedData.budgetCategories[category] = {
-            budgetAmount: amount,
+            budgetAmount: Number(amount),
             spentAmount: 0
         };
 
@@ -104,7 +104,7 @@ export async function addNewCategoryToMonthlySummary(user, category, amount) {
         }
 
         initialBudgetCategories[category] = {
-            budgetAmount: amount,
+            budgetAmount: Number(amount),
             spentAmount: 0
         };
 

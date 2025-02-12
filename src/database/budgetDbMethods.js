@@ -20,7 +20,7 @@ export async function getUserBudgetCategories(user) {
 export async function createNewBudgetCategory(user, name, amount) {
     await setDoc(doc(db, 'users', user.uid, 'budgetCategories', name), {
             categoryName: name,
-            budgetAmount: amount
+            budgetAmount: Number(amount)
         }
     );
 
