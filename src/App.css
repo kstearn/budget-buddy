@@ -67,6 +67,17 @@ button a {
   margin-right: 5px;
 }
 
+table tbody tr:hover {
+  background-color: #E5E7EB; /* Light gray background color */
+}
+
+.info {
+  margin-bottom: 15px;
+  padding: 0;
+  color: gray;
+  font-size: 0.8em;
+}
+
 /*** NAVIGATION ***/
 nav {
   height: 100%;
@@ -215,7 +226,6 @@ nav ul li a:hover {
   flex-direction: column;
   justify-content: flex-start;
   align-items: stretch;
-  gap: 20px;
   overflow: hidden;
 }
 
@@ -234,6 +244,7 @@ nav ul li a:hover {
 
 .popup-content {
   background-color: white;
+  color: black;
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);

@@ -12,10 +12,13 @@ import { Bar } from 'react-chartjs-2';
 import { colors } from '../colors';
 import { useAuth } from '../contexts/AuthContext';
 import { getMonthlySummary } from '../database/monthlySummariesDbMethods';
-import { getRecentTransactions } from '../database/transactionsDbMethods';
+import { getRecentTransactions, updateTransaction } from '../database/transactionsDbMethods';
+import EditTransactionPopupForm from '../components/EditTransactionPopupForm';
+import { useDataRefresh } from '../contexts/DataRefreshContext';
 
 const Spending = () => {
     const { user, loading } = useAuth();
+    const { refreshData } = useDataRefresh();
 
     ChartJS.register(
         CategoryScale,
@@ -30,6 +33,8 @@ const Spending = () => {
     const [spendingData, setSpendingData] = useState({});
     const [barChartData, setBarChartData] = useState({});
     const [recentTransactions, setRecentTransactions] = useState([]);
+    const [selectedTransaction, setSelectedTransaction] = useState(null);
+    const [isEditPopupVisible, setIsEditPopupVisible] = useState(false);
 
     // fetch data from the server
     useEffect(() => {
@@ -50,8 +55,10 @@ const Spending = () => {
 
         // get most recent transactions
         getRecentTransactions(user, 10)
-            .then(transactions => setRecentTransactions(transactions));
-    }, [user]);
+            .then(transactions => {
+                console.log(transactions);
+                setRecentTransactions(transactions)});
+    }, [user, refreshData]);
 
     //update the chart data when the dashboard data changes
     useEffect(() => {
@@ -79,6 +86,22 @@ const Spending = () => {
             ]
         });
     }, [spendingData])
+
+    const handleRowClick = (transaction) => {
+        console.log(transaction);
+        setSelectedTransaction(transaction);
+        setIsEditPopupVisible(true);
+    };
+
+    const handleCloseEditPopup = () => {
+        setIsEditPopupVisible(false);
+        setSelectedTransaction(null);
+    };
+
+    const handleEditSubmit = (updatedTransaction) => {
+        updateTransaction(user, updatedTransaction);
+        handleCloseEditPopup();
+    };
 
     return (
         <div className="spending">
@@ -114,6 +137,7 @@ const Spending = () => {
                 </div>
                 <div className="spendingTableContainer">
                     <h3>Transactions</h3>
+                    <p className="info">Click on a row to edit or delete it.</p>
                     <table>
                         <thead>
                             <tr>
@@ -125,7 +149,7 @@ const Spending = () => {
                         </thead>
                         <tbody>
                             {recentTransactions && recentTransactions.map((transaction, index) => (
-                                <tr key={index}>
+                                <tr key={index} onClick={() => handleRowClick(transaction)}>
                                     <td>{transaction.date}</td>
                                     <td>{transaction.category}</td>
                                     <td>{transaction.amount}</td>
@@ -136,6 +160,14 @@ const Spending = () => {
                     </table>
                 </div>
             </div>
+            {isEditPopupVisible && (
+                <EditTransactionPopupForm
+                    transaction={selectedTransaction}
+                    isVisible={isEditPopupVisible}
+                    onClose={handleCloseEditPopup}
+                    onSubmit={handleEditSubmit}
+                />
+            )}
         </div>
     );
 };

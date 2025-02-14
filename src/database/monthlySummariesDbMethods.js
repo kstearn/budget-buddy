@@ -14,7 +14,7 @@ export async function getMonthlySummary(user, year, month) {
     }
 }
 
-export async function updateMonthlySummary(user, transaction) {
+export async function addNewTransactionToMonthlySummary(user, transaction) {
     const year = transaction.date.split('-')[0];
     const month = transaction.date.split('-')[1];
     const monthlySummaryDoc = doc(db, 'users', user.uid, 'monthlySummaries', `${year}-${month}`);
@@ -114,5 +114,62 @@ export async function addNewCategoryToMonthlySummary(user, category, amount) {
             totalBudget: Object.values(budgetCategories).reduce((acc, curr) => acc + Number(curr), 0),
             budgetCategories: initialBudgetCategories
         });
+    }
+}
+
+export async function removeTransactionFromMonthlySummary(user, transaction) {
+    const year = transaction.date.split('-')[0];
+    const month = (new Date().getMonth() + 1).toString().padStart(2, '0');
+    const monthlySummaryDoc = doc(db, 'users', user.uid, 'monthlySummaries', `${year}-${month}`);
+    const monthlySummaryDocSnap = await getDoc(monthlySummaryDoc);
+
+    if (monthlySummaryDocSnap.exists()) {
+        const monthlySummaryData = monthlySummaryDocSnap.data();
+        const updatedData = {
+            totalSpent: Number(monthlySummaryData.totalSpent),
+            totalIncome: Number(monthlySummaryData.totalIncome),
+            totalBudget: Number(monthlySummaryData.totalBudget),
+            budgetCategories: { ...monthlySummaryData.budgetCategories }
+        };
+
+        if (transaction.type === 'expense') {
+            updatedData.totalSpent -= Number(transaction.amount);
+            updatedData.budgetCategories[transaction.category].spentAmount -= Number(transaction.amount);
+        } else if (transaction.type === 'income') {
+            updatedData.totalIncome -= Number(transaction.amount);
+        }
+
+        await setDoc(monthlySummaryDoc, updatedData);
+    } else {
+        console.error("No such document!");
+    }
+}
+
+export async function updateTransactionAmountInMonthlySummary(user, transaction, prevAmount) {
+    const year = transaction.date.split('-')[0];
+    const month = (new Date().getMonth() + 1).toString().padStart(2, '0');
+    const monthlySummaryDoc = doc(db, 'users', user.uid, 'monthlySummaries', `${year}-${month}`);
+    const monthlySummaryDocSnap = await getDoc(monthlySummaryDoc);
+
+    if (monthlySummaryDocSnap.exists()) {
+        const monthlySummaryData = monthlySummaryDocSnap.data();
+        const updatedData = {
+            totalSpent: Number(monthlySummaryData.totalSpent),
+            totalIncome: Number(monthlySummaryData.totalIncome),
+            totalBudget: Number(monthlySummaryData.totalBudget),
+            budgetCategories: { ...monthlySummaryData.budgetCategories }
+        };
+
+        if (transaction.type === 'expense') {
+            // subtract previous transaction amount and add new transaction amount
+            updatedData.totalSpent += Number(transaction.amount) - Number(prevAmount);
+            updatedData.budgetCategories[transaction.category].spentAmount += Number(transaction.amount) - Number(prevAmount);
+        } else if (transaction.type === 'income') {
+            updatedData.totalIncome += Number(transaction.amount) - Number(prevAmount);
+        }
+
+        await setDoc(monthlySummaryDoc, updatedData);
+    } else {
+        console.error("No such document!");
     }
 }
