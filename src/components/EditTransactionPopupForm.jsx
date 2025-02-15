@@ -61,7 +61,7 @@ const EditTransactionPopupForm = ({ transaction, isVisible, onClose, onSubmit })
                             onChange={(e) => setCategory(e.target.value)}
                             required
                         >
-                            {Object.keys(categories).map((c) => (
+                            {categories.map((c) => (
                                 <option key={c} value={c}>
                                     {c}
                                 </option>
