@@ -6,14 +6,27 @@ export async function getUserBudgetCategories(user) {
     try {
         const categoriesColl = collection(db, 'users', user.uid, 'budgetCategories');
         const categoriesSnapshot = await getDocs(categoriesColl);
-        const categories = {};
+        const categories = [];
         categoriesSnapshot.forEach(doc => {
-            categories[doc.id] = {
+            categories.push({
+                id: doc.id,
                 categoryName: doc.data().categoryName,
                 budgetAmount: doc.data().budgetAmount
-            }
+            });
         });
-        return categories;
+        // Sort categories alphabetically by categoryName
+        categories.sort((a, b) => a.categoryName.localeCompare(b.categoryName));
+
+        // Convert the sorted array back to an object
+        const sortedCategories = {};
+        categories.forEach(category => {
+            sortedCategories[category.id] = {
+                categoryName: category.categoryName,
+                budgetAmount: category.budgetAmount
+            };
+        });
+
+        return sortedCategories;
     } catch (error) {
         console.error("Error fetching budget category: ", error);
         return {};

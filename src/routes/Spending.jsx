@@ -36,7 +36,6 @@ const Spending = () => {
     const [selectedTransaction, setSelectedTransaction] = useState(null);
     const [isEditPopupVisible, setIsEditPopupVisible] = useState(false);
 
-    // fetch data from the server
     useEffect(() => {
         if (!user) return;
 
@@ -62,7 +61,7 @@ const Spending = () => {
     useEffect(() => {
         if (!spendingData.budgetCategories) return;
 
-        const categories = Object.keys(spendingData.budgetCategories);
+        const categories = Object.keys(spendingData.budgetCategories).sort((a, b) => a.localeCompare(b));;
         const spentAmounts = categories.map(category => spendingData.budgetCategories[category].spentAmount);
         const budgetAmounts = categories.map(category => spendingData.budgetCategories[category].budgetAmount);
 
