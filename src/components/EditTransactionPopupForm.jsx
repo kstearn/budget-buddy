@@ -19,7 +19,10 @@ const EditTransactionPopupForm = ({ transaction, isVisible, onClose, onSubmit })
     useEffect(() => {
         if (user) {
             getUserBudgetCategories(user)
-            .then(setCategories)
+            .then(data => {
+                const categoryNames = Object.values(data).map(category => category.categoryName);
+                setCategories(categoryNames);
+            })
             .catch(console.error);
         }
     }, [user, refreshData]);
