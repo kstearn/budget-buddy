@@ -102,13 +102,11 @@ export async function addNewCategoryToMonthlySummary(user, newCategoryName, newC
     } else {
         // create new monthly summary
         const budgetCategories = await getUserBudgetCategories(user);
-        console.log(budgetCategories);
 
         const initialBudgetCategories = {};
 
         for (const categoryId in budgetCategories) {
             const category = budgetCategories[categoryId];
-            console.log(category);
 
             initialBudgetCategories[category.categoryName] = {
                 budgetAmount: Number(category.budgetAmount),

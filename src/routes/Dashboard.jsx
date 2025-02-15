@@ -54,11 +54,14 @@ const Dashboard = () => {
     useEffect(() => {
         if (!dashboardData.totalSpent) return;
 
+        // do not display remaining budget if it is negative
+        const remainingBudget = Math.max(0, dashboardData.totalBudget - dashboardData.totalSpent);
+
         setBudgetChartData({
             labels: ['Spent', 'Remaining'],
             datasets: [
                 {
-                    data: [dashboardData.totalSpent, dashboardData.totalBudget - dashboardData.totalSpent],
+                    data: [dashboardData.totalSpent, remainingBudget],
                     backgroundColor: [colors[1], colors[0]]
                 }
             ]
