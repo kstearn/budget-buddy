@@ -49,8 +49,9 @@ const Budget = () => {
         setSelectedCategory(null);
     };
     
-    const handleEditSubmit = (updatedCategory) => {
-        updateCategory(user, updatedCategory);
+    const handleEditSubmit = async (updatedCategory) => {
+        await updateCategory(user, updatedCategory);
+        triggerRefresh();
         handleCloseEditPopup();
     };
 

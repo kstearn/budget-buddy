@@ -149,7 +149,7 @@ const Dashboard = () => {
                     </div>
                 </div>
             :
-                <p>No data to display. Try adding a budget category or transaction!</p>
+                <p>No data to display. Try adding some budget categories and transactions!</p>
             }
         </div>
     );

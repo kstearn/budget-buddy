@@ -67,6 +67,22 @@ button a {
   margin-right: 5px;
 }
 
+.deleteButton {
+  background-color: #EF4444;
+}
+
+.deleteButton:hover {
+  background-color: #f04e4e;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.deleteButton:active {
+  background-color: #ed3636;
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
 table tbody tr:hover {
   background-color: #E5E7EB; /* Light gray background color */
 }

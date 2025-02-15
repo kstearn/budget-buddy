@@ -94,9 +94,9 @@ const EditTransactionPopupForm = ({ transaction, isVisible, onClose, onSubmit })
                             onChange={(e) => setDescription(e.target.value)}
                         />
                     </label>
-                    <button type="submit">Edit</button>
-                    <button type="button" onClick={handleDelete}>Delete</button>
+                    <button type="submit">Save Changes</button>
                     <button type="button" onClick={onClose}>Cancel</button>
+                    <button type="button" className="deleteButton" onClick={handleDelete}>Delete Transaction</button>
                 </form>
             </div>
         </div>

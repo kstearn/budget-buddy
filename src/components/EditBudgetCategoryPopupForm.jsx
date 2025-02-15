@@ -54,9 +54,9 @@ const EditBudgetCategoryPopupForm = ({ selectedCategory, isVisible, onClose, onS
                             required
                         />
                     </label>
-                    <button type="submit">Edit</button>
-                    <button type="button" onClick={handleDelete}>Delete</button>
+                    <button type="submit">Save Changes</button>
                     <button type="button" onClick={onClose}>Cancel</button>
+                    <button type="button" className="deleteButton" onClick={handleDelete}>Delete Category</button>
                 </form>
             </div>
         </div>

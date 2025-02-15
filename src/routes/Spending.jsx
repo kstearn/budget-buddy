@@ -55,9 +55,7 @@ const Spending = () => {
 
         // get most recent transactions
         getRecentTransactions(user, 10)
-            .then(transactions => {
-                console.log(transactions);
-                setRecentTransactions(transactions)});
+            .then(transactions => setRecentTransactions(transactions));
     }, [user, refreshData]);
 
     //update the chart data when the dashboard data changes
