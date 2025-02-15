@@ -11,7 +11,10 @@ const NewExpensePopupForm = ({ isVisible, onClose, onSubmit }) => {
     useEffect(() => {
         if (user) {
             getUserBudgetCategories(user)
-            .then(setCategories)
+            .then(data => {
+                const categoryNames = Object.values(data).map(category => category.categoryName);
+                setCategories(categoryNames);
+            })
             .catch(console.error);
         }
     }, [user, refreshData]);
@@ -38,7 +41,7 @@ const NewExpensePopupForm = ({ isVisible, onClose, onSubmit }) => {
                     <label>
                         Category:
                         <select name="category" required>
-                            {Object.keys(categories).map((category) => (
+                            {categories.map((category) => (
                                 <option key={category} value={category}>
                                     {category}
                                 </option>

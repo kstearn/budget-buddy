@@ -6,15 +6,6 @@ import { useDataRefresh } from "../contexts/DataRefreshContext";
 const NewIncomePopupForm = ({ isVisible, onClose, onSubmit }) => {
     const { user } = useAuth();
     const { refreshData } = useDataRefresh();
-    const [categories, setCategories] = useState([]);
-
-    useEffect(() => {
-        if (user) {
-            getUserBudgetCategories(user)
-            .then(setCategories)
-            .catch(console.error);
-        }
-    }, [user, refreshData]);
 
     if (!isVisible) return null;
 

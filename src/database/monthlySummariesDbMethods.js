@@ -75,7 +75,6 @@ export async function addNewTransactionToMonthlySummary(user, transaction) {
 }
 
 export async function addNewCategoryToMonthlySummary(user, newCategoryName, newCategoryAmount) {
-    console.log(newCategoryName, newCategoryAmount);
     // get current year/month
     const year = new Date().getFullYear();
     const month = (new Date().getMonth() + 1).toString().padStart(2, '0');
@@ -91,6 +90,8 @@ export async function addNewCategoryToMonthlySummary(user, newCategoryName, newC
             totalBudget: Number(monthlySummaryData.totalBudget),
             budgetCategories: { ...monthlySummaryData.budgetCategories }
         };
+
+        updatedData.totalBudget += Number(newCategoryAmount);
 
         updatedData.budgetCategories[newCategoryName] = {
             budgetAmount: Number(newCategoryAmount),
