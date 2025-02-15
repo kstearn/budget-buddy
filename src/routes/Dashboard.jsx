@@ -67,7 +67,7 @@ const Dashboard = () => {
             ]
         });
 
-        const categories = Object.keys(dashboardData.budgetCategories);
+        const categories = Object.keys(dashboardData.budgetCategories).sort((a, b) => a.localeCompare(b));;
         const spentAmounts = categories.map(category => dashboardData.budgetCategories[category].spentAmount);
         const budgetAmounts = categories.map(category => dashboardData.budgetCategories[category].budgetAmount);
 

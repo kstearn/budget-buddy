@@ -19,6 +19,7 @@ import { useDataRefresh } from '../contexts/DataRefreshContext';
 const Spending = () => {
     const { user, loading } = useAuth();
     const { refreshData } = useDataRefresh();
+    const { triggerRefresh } = useDataRefresh();
 
     ChartJS.register(
         CategoryScale,
@@ -61,7 +62,7 @@ const Spending = () => {
     useEffect(() => {
         if (!spendingData.budgetCategories) return;
 
-        const categories = Object.keys(spendingData.budgetCategories).sort((a, b) => a.localeCompare(b));;
+        const categories = Object.keys(spendingData.budgetCategories).sort((a, b) => a.localeCompare(b));
         const spentAmounts = categories.map(category => spendingData.budgetCategories[category].spentAmount);
         const budgetAmounts = categories.map(category => spendingData.budgetCategories[category].budgetAmount);
 
@@ -82,7 +83,7 @@ const Spending = () => {
                 }
             ]
         });
-    }, [spendingData])
+    }, [spendingData, refreshData]);
 
     const handleRowClick = (transaction) => {
         setSelectedTransaction(transaction);
@@ -94,8 +95,9 @@ const Spending = () => {
         setSelectedTransaction(null);
     };
 
-    const handleEditSubmit = (updatedTransaction) => {
-        updateTransaction(user, updatedTransaction);
+    const handleEditSubmit = async (updatedTransaction) => {
+        await updateTransaction(user, updatedTransaction);
+        triggerRefresh();
         handleCloseEditPopup();
     };
 
