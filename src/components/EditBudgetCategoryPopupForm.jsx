@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { getUserBudgetCategories, deleteCategory } from "../database/budgetDbMethods";
-import { useDataRefresh, triggerRefresh } from "../contexts/DataRefreshContext";
+import { deleteCategory } from "../database/budgetDbMethods";
+import { useDataRefresh } from "../contexts/DataRefreshContext";
 
 const EditBudgetCategoryPopupForm = ({ selectedCategory, isVisible, onClose, onSubmit }) => {
     const { user } = useAuth();
