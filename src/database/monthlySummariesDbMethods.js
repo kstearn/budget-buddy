@@ -15,8 +15,10 @@ export async function getMonthlySummary(user, year, month) {
 }
 
 export async function addNewTransactionToMonthlySummary(user, transaction) {
+    // get transaction year/month
     const year = transaction.date.split('-')[0];
     const month = transaction.date.split('-')[1];
+
     const monthlySummaryDoc = doc(db, 'users', user.uid, 'monthlySummaries', `${year}-${month}`);
     const monthlySummaryDocSnap = await getDoc(monthlySummaryDoc);
 
@@ -72,9 +74,12 @@ export async function addNewTransactionToMonthlySummary(user, transaction) {
     }
 }
 
-export async function addNewCategoryToMonthlySummary(user, category, amount) {
+export async function addNewCategoryToMonthlySummary(user, newCategoryName, newCategoryAmount) {
+    console.log(newCategoryName, newCategoryAmount);
+    // get current year/month
     const year = new Date().getFullYear();
     const month = (new Date().getMonth() + 1).toString().padStart(2, '0');
+
     const monthlySummaryDoc = doc(db, 'users', user.uid, 'monthlySummaries', `${year}-${month}`);
     const monthlySummaryDocSnap = await getDoc(monthlySummaryDoc);
 
@@ -87,39 +92,48 @@ export async function addNewCategoryToMonthlySummary(user, category, amount) {
             budgetCategories: { ...monthlySummaryData.budgetCategories }
         };
 
-        updatedData.budgetCategories[category] = {
-            budgetAmount: Number(amount),
+        updatedData.budgetCategories[newCategoryName] = {
+            budgetAmount: Number(newCategoryAmount),
             spentAmount: 0
         };
 
         await setDoc(monthlySummaryDoc, updatedData);
     } else {
+        // create new monthly summary
         const budgetCategories = await getUserBudgetCategories(user);
+        console.log(budgetCategories);
+
         const initialBudgetCategories = {};
-        for (const category in budgetCategories) {
-            initialBudgetCategories[category] = {
-                budgetAmount: Number(budgetCategories[category]),
+
+        for (const categoryId in budgetCategories) {
+            const category = budgetCategories[categoryId];
+            console.log(category);
+
+            initialBudgetCategories[category.categoryName] = {
+                budgetAmount: Number(category.budgetAmount),
                 spentAmount: 0
             };
         }
 
-        initialBudgetCategories[category] = {
-            budgetAmount: Number(amount),
+        initialBudgetCategories[newCategoryName] = {
+            budgetAmount: Number(newCategoryAmount),
             spentAmount: 0
         };
 
         await setDoc(monthlySummaryDoc, {
             totalSpent: 0,
             totalIncome: 0,
-            totalBudget: Object.values(budgetCategories).reduce((acc, curr) => acc + Number(curr), 0),
+            totalBudget: Object.values(budgetCategories).reduce((acc, curr) => acc + Number(curr.budgetAmount), 0),
             budgetCategories: initialBudgetCategories
         });
     }
 }
 
 export async function removeTransactionFromMonthlySummary(user, transaction) {
+    // get transaction year/month
     const year = transaction.date.split('-')[0];
-    const month = (new Date().getMonth() + 1).toString().padStart(2, '0');
+    const month = transaction.date.split('-')[1];
+
     const monthlySummaryDoc = doc(db, 'users', user.uid, 'monthlySummaries', `${year}-${month}`);
     const monthlySummaryDocSnap = await getDoc(monthlySummaryDoc);
 
@@ -146,8 +160,10 @@ export async function removeTransactionFromMonthlySummary(user, transaction) {
 }
 
 export async function updateTransactionAmountInMonthlySummary(user, transaction, prevAmount) {
+    // get transaction year/month
     const year = transaction.date.split('-')[0];
-    const month = (new Date().getMonth() + 1).toString().padStart(2, '0');
+    const month = transaction.date.split('-')[1];
+
     const monthlySummaryDoc = doc(db, 'users', user.uid, 'monthlySummaries', `${year}-${month}`);
     const monthlySummaryDocSnap = await getDoc(monthlySummaryDoc);
 
@@ -167,6 +183,74 @@ export async function updateTransactionAmountInMonthlySummary(user, transaction,
         } else if (transaction.type === 'income') {
             updatedData.totalIncome += Number(transaction.amount) - Number(prevAmount);
         }
+
+        await setDoc(monthlySummaryDoc, updatedData);
+    } else {
+        console.error("No such document!");
+    }
+}
+
+export async function updateCategoryInMonthlySummary(user, updatedCategory, prevName, prevAmount) {
+    // get current year/month
+    const year = new Date().getFullYear();
+    const month = (new Date().getMonth() + 1).toString().padStart(2, '0');
+
+    const monthlySummaryDoc = doc(db, 'users', user.uid, 'monthlySummaries', `${year}-${month}`);
+    const monthlySummaryDocSnap = await getDoc(monthlySummaryDoc);
+
+    if (monthlySummaryDocSnap.exists()) {
+        const monthlySummaryData = monthlySummaryDocSnap.data();
+        const updatedData = {
+            totalSpent: Number(monthlySummaryData.totalSpent),
+            totalIncome: Number(monthlySummaryData.totalIncome),
+            totalBudget: Number(monthlySummaryData.totalBudget),
+            budgetCategories: { ...monthlySummaryData.budgetCategories }
+        };
+
+        // update budget amount, spent amount remains the same
+        updatedData.budgetCategories[updatedCategory.name] = {
+            budgetAmount: Number(updatedCategory.amount),
+            spentAmount: updatedData.budgetCategories[prevName].spentAmount
+        };
+
+        // remove previous category if name changed
+        if (prevName !== updatedCategory.name) {
+            delete updatedData.budgetCategories[prevName];
+        }
+
+        // update total budget by adding new category amount and subtracting previous category amount
+        updatedData.totalBudget += Number(updatedCategory.amount) - Number(prevAmount);
+
+        await setDoc(monthlySummaryDoc, updatedData);
+    } else {
+        console.error("No such document!");
+    }
+}
+
+export async function removeCategoryFromMonthlySummary(user, category) {
+    console.log(category);
+    // get current year/month
+    const year = new Date().getFullYear();
+    const month = (new Date().getMonth() + 1).toString().padStart(2, '0');
+
+    const monthlySummaryDoc = doc(db, 'users', user.uid, 'monthlySummaries', `${year}-${month}`);
+    const monthlySummaryDocSnap = await getDoc(monthlySummaryDoc);
+
+    if (monthlySummaryDocSnap.exists()) {
+        const monthlySummaryData = monthlySummaryDocSnap.data();
+        const updatedData = {
+            totalSpent: Number(monthlySummaryData.totalSpent),
+            totalIncome: Number(monthlySummaryData.totalIncome),
+            totalBudget: Number(monthlySummaryData.totalBudget),
+            budgetCategories: { ...monthlySummaryData.budgetCategories }
+        };
+
+        console.log(updatedData);
+
+        // remove previous category amount from total budget
+        updatedData.totalBudget -= Number(updatedData.budgetCategories[category.name].budgetAmount);
+        // remove category from budget categories
+        delete updatedData.budgetCategories[category.name];
 
         await setDoc(monthlySummaryDoc, updatedData);
     } else {

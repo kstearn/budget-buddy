@@ -88,7 +88,6 @@ const Spending = () => {
     }, [spendingData])
 
     const handleRowClick = (transaction) => {
-        console.log(transaction);
         setSelectedTransaction(transaction);
         setIsEditPopupVisible(true);
     };

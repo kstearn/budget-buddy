@@ -46,7 +46,6 @@ export async function updateTransaction(user, transaction) {
         const transactionDocSnap = await getDoc(transactionDoc);
 
         const prevAmount = transactionDocSnap.data().amount;
-        console.log(prevAmount);
 
         await setDoc(transactionDoc, {
             amount: Number(transaction.amount),
@@ -67,7 +66,6 @@ export async function updateTransaction(user, transaction) {
 }
 
 export async function deleteTransaction(user, transaction) {
-    console.log("Deleting transaction: ", transaction);
     try {
         const transactionDoc = doc(db, 'users', user.uid, 'transactions', transaction.id);
         await deleteDoc(transactionDoc);
