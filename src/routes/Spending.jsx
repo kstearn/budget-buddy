@@ -9,6 +9,7 @@ import {
     Tooltip,
     Legend } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import { lighten, darken } from 'polished';
 import { colors } from '../colors';
 import { useAuth } from '../contexts/AuthContext';
 import { getMonthlySummary } from '../database/monthlySummariesDbMethods';
@@ -73,12 +74,16 @@ const Spending = () => {
                     label: 'Spent Amount',
                     data: spentAmounts,
                     backgroundColor: colors.slice(0, categories.length),
+                    borderColor: colors.slice(0, categories.length).map(color => darken(0.15, color)),
+                    borderWidth: 1,
                     stack: 'Stack 0'
                 },
                 {
                     label: 'Remaining Budget',
                     data: budgetAmounts.map((budget, index) => budget - spentAmounts[index]),
-                    backgroundColor: colors.slice(categories.length, categories.length * 2),
+                    backgroundColor: colors.slice(0, categories.length).map(color => lighten(0.15, color)),
+                    borderColor: colors.slice(0, categories.length).map(color => darken(0.15, color)),
+                    borderWidth: 1,
                     stack: 'Stack 0'
                 }
             ]
