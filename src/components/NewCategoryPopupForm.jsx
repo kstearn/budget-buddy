@@ -25,7 +25,7 @@ const NewCategoryPopupForm = ({ isVisible, onClose, onSubmit }) => {
                     </label>
                     <label>
                         Budget Amount:
-                        <input type="number" name="budgetAmount" required />
+                        <input type="number" name="budgetAmount" min="0.01" required />
                     </label>
                     <button type="submit">Add</button>
                     <button type="button" onClick={onClose}>Cancel</button>

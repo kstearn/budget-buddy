@@ -49,6 +49,7 @@ const EditBudgetCategoryPopupForm = ({ selectedCategory, isVisible, onClose, onS
                         <input
                             type="number"
                             name="budgetAmount"
+                            min="0.01"
                             value={amount}
                             onChange={(e) => setAmount(e.target.value)}
                             required

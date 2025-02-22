@@ -50,7 +50,7 @@ const NewExpensePopupForm = ({ isVisible, onClose, onSubmit }) => {
                     </label>
                     <label>
                         Amount:
-                        <input type="number" name="amount" required />
+                        <input type="number" name="amount" min="0.01" required />
                     </label>
                     <label>
                         Date:

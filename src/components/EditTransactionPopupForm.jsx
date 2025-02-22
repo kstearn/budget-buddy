@@ -73,6 +73,7 @@ const EditTransactionPopupForm = ({ transaction, isVisible, onClose, onSubmit })
                         <input
                             type="number"
                             name="amount"
+                            min="0.01"
                             value={amount}
                             onChange={(e) => setAmount(e.target.value)}
                             required
