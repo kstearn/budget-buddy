@@ -28,7 +28,7 @@ const NewIncomePopupForm = ({ isVisible, onClose, onSubmit }) => {
                 <form onSubmit={handleSubmit}>
                     <label>
                         Amount:
-                        <input type="number" name="amount" min="0.01" required />
+                        <input type="number" name="amount" min="0.01" step="0.01" required />
                     </label>
                     <label>
                         Date:
